@@ -1,14 +1,13 @@
-%global commit0 66d12bb23b04e201c5846e325f0b10930ed802f8
+%global commit0 c7273eed2b801c9e41bf8e512b45685264b09504
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Core execution tool for unprivileged containers
 Name: bubblewrap
-Version: 0
+Version: %{commit0}
 Release: 1%{?dist}
-#VCS: git:https://github.com/projectatomic/bubblewrap
-Source0: https://github.com/projectatomic/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0: https://github.com/dmikushin/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 License: LGPLv2+
-URL: https://github.com/projectatomic/bubblewrap
+URL: https://github.com/dmikushin/bubblewrap
 
 BuildRequires: git
 # We always run autogen.sh
@@ -40,6 +39,7 @@ find $RPM_BUILD_ROOT -name '*.la' -delete
 %license COPYING
 %doc README.md
 %{_datadir}/bash-completion/completions/bwrap
+%{_datadir}/zsh/site-functions/_bwrap
 %if (0%{?rhel} != 0 && 0%{?rhel} <= 7)
 %attr(4755,root,root) %{_bindir}/bwrap
 %else
