@@ -17,8 +17,6 @@
  *
  */
 
-#include "config.h"
-
 #include <sys/mount.h>
 
 #include "utils.h"

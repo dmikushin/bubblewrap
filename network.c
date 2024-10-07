@@ -17,8 +17,6 @@
  *
  */
 
-#include "config.h"
-
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <netinet/in.h>
