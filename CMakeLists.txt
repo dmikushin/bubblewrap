@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(bubblewrap VERSION 0.10.0 LANGUAGES C)
+project(bwrap VERSION 0.10.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -15,10 +15,16 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBCAP REQUIRED libcap)
 pkg_check_modules(LIBSELINUX REQUIRED libselinux)
 
-add_executable(bwrap bubblewrap.c bind-mount.c network.c utils.c)
-target_link_libraries(bwrap ${LIBCAP_LIBRARIES} ${LIBSELINUX_LIBRARIES})
-target_include_directories(bwrap PUBLIC ${LIBCAP_INCLUDE_DIRS} ${LIBSELINUX_INCLUDE_DIRS})
-target_compile_definitions(bwrap PRIVATE HAVE_SELINUX HAVE_SELINUX_2_3)
-target_compile_options(bwrap PUBLIC ${LIBCAP_CFLAGS_OTHER} ${LIBSELINUX_CFLAGS_OTHER})
+add_library(${PROJECT_NAME} STATIC src/bwrap.c src/bind-mount.c src/network.c src/utils.c)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(${PROJECT_NAME} ${LIBCAP_LIBRARIES} ${LIBSELINUX_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCAP_INCLUDE_DIRS} ${LIBSELINUX_INCLUDE_DIRS})
+target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_SELINUX HAVE_SELINUX_2_3)
+target_compile_options(${PROJECT_NAME} PRIVATE ${LIBCAP_CFLAGS_OTHER} ${LIBSELINUX_CFLAGS_OTHER})
+
+add_executable(${PROJECT_NAME}_cli src/main.c)
+target_link_libraries(${PROJECT_NAME}_cli ${PROJECT_NAME})
 
 install(TARGETS bwrap DESTINATION bin)
+

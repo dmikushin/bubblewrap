@@ -34,6 +34,7 @@
 #include <linux/seccomp.h>
 #include <linux/filter.h>
 
+#include "bwrap/bwrap.h"
 #include "utils.h"
 #include "network.h"
 #include "bind-mount.h"
@@ -2683,7 +2684,7 @@ namespace_ids_write (int    fd,
 }
 
 int
-main (int    argc,
+bwrap (int    argc,
       char **argv)
 {
   mode_t old_umask;
